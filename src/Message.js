@@ -51,6 +51,7 @@ function Message() {
                     console.log(response.data.message);
                 } else {
                     alert("message sent!");
+                    fetchData()
                 }
             })
             .catch((err) => console.log(err));
