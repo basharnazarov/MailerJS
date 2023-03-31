@@ -63,19 +63,21 @@ function Message() {
     };
 
     const fetchData = async () => {
+     if(user){
         const result = await axios
-            .post("https://webapp4-0tik.onrender.com/messages", {
-                username: user,
-            })
-            .then((response) => {
-                if (response.data.message) {
-                    console.log(response.data.message);
-                } else {
-                    return response.data;
-                }
-            })
-            .catch((err) => console.log(err));
-        setData(result);
+        .post("https://webapp4-0tik.onrender.com/messages", {
+            username: user,
+        })
+        .then((response) => {
+            if (response.data.message) {
+                console.log(response.data.message);
+            } else {
+                return response.data;
+            }
+        })
+        .catch((err) => console.log(err));
+    setData(result);
+     }
     };
 
     const fetchRecipients = async () => {
@@ -102,6 +104,8 @@ function Message() {
         const item = JSON.parse(localStorage.getItem("user"));
         if (item) {
             setUser(item);
+        } else {
+            navigate('/')
         }
     }, []);
 
@@ -111,7 +115,7 @@ function Message() {
 
     React.useEffect(() => {
         fetchRecipients();
-    }, []);
+    }, [data]);
 
     return (
         <Box sx={{ mt: "5%" }} onClick={() => setOpen(false)}>
@@ -154,7 +158,7 @@ function Message() {
                 {matched.length > 0
                     ? matched.map((item) => {
                           return (
-                              <MenuItem onClick={(e) => handleClose(e)}>
+                              <MenuItem key={item} onClick={(e) => handleClose(e)}>
                                   {item}
                               </MenuItem>
                           );
